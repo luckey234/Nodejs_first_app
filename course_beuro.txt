@@ -1,0 +1,367 @@
+const http=require('http')
+const { version } = require('os')
+const server=http.createServer((req,res)=>{
+if(req.url==='/'){
+res.write('helllo JohnCena')
+res.end()
+}
+if(req.url==='/api/courses'){
+    res.write(JSON.stringify(['satish','upendra','luckey','ravindra']))
+    res.end()
+}
+})
+
+
+In Npm Demo files get details about package.json..
+about underscore
+mongoose installation
+server_browser_communicate
+gitignore connection
+ versionning-->
+  video about sementic versioning may be needed about versioning issur
+  first version call minor version 
+  second version call major version
+  its use for bug fixing
+listing of installed version packages../
+npmjs.com versioning issue  ---> npm view mongose
+--->npm view mongoose dependencies
+--->npm view version
+
+
+install specific version of packages
+ npm i mongoose@2.4.2
+ npm i underscore@2.4.2
+
+commond for know about version [latest,current,wanted,location]
+ npm outdated
+
+"npm update"
+"npm i -g npm-check-updates" according to requireed updates version for packages
+
+npm ncu know about all dependencies matchthe latest packages veersions
+
+...dev dependencies....
+........"npm i jshint --save-dev"...
+under diiferent prop..
+
+ "devDependencies": {
+    "jshint": "^2.13.4"
+  }
+  
+   for uninstall
+ npm un mongoose      (or ) npm uninstall mongoose...
+
+how to publish our npm node
+...>"npm login" and then
+....>"npm publish"
+
+ lecture 41 start
+
+'''''''''''Rest ful services''''''''''
+
+HTTP METHOD:
+1.GET    
+2.POST   
+3.PUT
+4.DELETE
+.
+.
+.
+.
+    !...RESTFULL SERVICES...!
+    NOTE: know about express visit npmjs.org or npmjs.com
+    now about express.js
+    and learn more about use this --->npm init
+                                  --->npm i express
+                                   const express =require('express')
+const app= express();
+
+app.get()
+app.post()
+app.put()
+app.delete()
+know about more visit website --->ie, expressjs.com
+
+
+==>> Nodemon
+npm i -g nodemon 
+use nodemon we didnt use for run frquently
+
+    res.send('courses 1')
+            
+            topic-46: 
+Environment Variables-->
+Environment Variables called ....'PORT'
+
+how we can use varivale dynamically PORT
+.................................
+const port=process.env.PORT || 3000
+app.listen(port,()=>{
+    console.log(`listening port ${port}`);
+})
+      topic:47
+      Route Parameter
+      app.get('/api/course/:id',(req,res)=>{
+    res.send(req.params.id)
+    })
+    .............. get value according to dynamic Id
+    --==?>> Query_String _Parameter
+
+     topic:48
+     create data in course type of array and then 
+     find those like this
+
+     app.get('/api/courses',(req,res)=>{
+    res.send(courses)
+  })
+  app.get('/api/courses/:id',(req,res)=>{
+    const course=courses.find(c=>c.id===parseInt(req.params.id))
+    if(!course) res.status(404).send('the course for this given id is not present')
+    res.send(course)
+  })
+
+  you can check network tab here select All expected fetch/XR 
+  ..topic 49:
+  handling post http request.
+
+  ./
+  app.post('/api/courses',(req,res)=>{
+    const course={
+        id:courses.length+1,
+        name:req.body.name
+    };
+    courses.push(course)
+    res.send(course)
+  })   
+  install postman use concurrently redirection....
+
+topic no.51
+  ====<>>>Input validation
+  we can use
+     if( ! req.body.name || req.body.name.length<3){
+//404 Bad Request()
+res.status(404).send('Name is required   and should be a minimum 3 character')
+return
+    } 
+
+    .. but this  way ,its make complex for validation of Input  fields so....,Use Npm 
+    use --------::::::====> npm joi
+    use commond npm i joi.
+
+    Topic 56 to 69 about Express Json
+    moddle_ware_function
+       //differente about custom middle_ware_function
+    app.use(function(req,res,next){
+        console.log('logging.....');
+    })
+    topic:59 
+    Built in Middle_Ware 
+    topic::
+    Third Party Middle Ware function..........
+    Helmet......... npm i helmet
+    "Helmet helps you secure your Express apps by setting various HTTP headers.
+     It's not a silver bullet, but it can help!"
+     visit:'https://www.npmjs.com/package/helmet'
+
+  morgon..   "npm i morgan"
+"HTTP request logger middleware for node.js"
+visit:'https://www.npmjs.com/package/morgan'
+
+Environment....   set/export NODE_ENV=production
+confuiguiration... "npm i config"
+debugging.... "npm i debug"
+
+template Engine::
+npm i pug 
+
+
+Data Base Integration
+const app=express()
+app.set('view engine','pug')
+app.set('views','./views')
+
+app.get('/',(req,res)=>{
+    res.render('index',{title:'my express app',messege:'Hello node'})
+    })
+
+
+
+    ...
+    Synchrounous Vs Asynchrounous
+
+
+
+    Is JavaScript synchronous and asynchronous?
+Image result for javascript synchronous or asynchronous
+JavaScript is always synchronous and single-threaded.
+
+If you're executing a JavaScript block of code on a page then no other
+ JavaScript on that page will currently be executed.
+ JavaScript is only asynchronous in the sense that it can make, for example, Ajax calls.
+
+
+    console.log('Before');
+
+    setTimeout(() => {
+        console.log("wait responce from database...");
+        loader=""
+    }, 2000);
+    console.log('After');
+    console.log('After_After');
+
+
+    //
+    // thre way to deal asynchronous 
+    1...Async/await
+    //promise
+    //callback
+
+Point :=> 72
+Call__back
+
+      console.log('Before');
+      getUser(1,(user)=>{
+        console.log('User',user);
+
+        //get repositories....
+        getRepositories(user.guthubUserName,(repos)=>{
+          console.log("Repo",repos);
+
+        })
+      })
+    
+      console.log('After');
+      console.log('After_After');
+
+      function getUser(id,callback){
+          debugger
+          setTimeout(() => {
+              console.log("Reading User From Database...");
+              callback({ id:id,guthubUserName:'Mosh'})
+        
+          return ;
+      }, 2000);
+
+      }
+  function getRepositories(username,callback){
+      setTimeout(() => {
+          console.log('Calling Git Api....');
+          callback(['repo1','repo2','repo3'])
+      }, 2000);
+    
+  }
+
+  
+
+
+73.
+Call__hell
+
+
+74:name function rescue
+    
+
+    75.::Promise 
+    79:: Parallel Promise
+    80:Asynch and Await 
+    
+
+
+    const p1=new Promise((resolve)=>{
+setTimeout(() => {
+    console.log('Async Operator......1')
+    resolve(1)
+}, 2000);
+})
+const p2=new Promise((resolve)=>{
+    setTimeout(() => {
+        console.log('Async Operator......2')
+        resolve(2)
+    }, 2000);
+    });
+    Promise.all([p1,p2])     ||    Promise.race([p1,p2])
+    .then(result=>console.log(result))
+    .catch(err=>console.log('Error ',err.messege))
+
+
+    lecture 82:Mongo CRUD
+
+
+
+
+   // convert promise and async await
+
+const { reject } = require("underscore");
+
+// getCustomer(1, (customer) => {
+//     console.log('Customer: ', customer);
+//     if (customer.isGold) {
+//       getTopMovies((movies) => {
+//         console.log('Top movies: ', movies);
+//         sendEmail(customer.email, movies, () => {
+//           console.log('Email sent...')
+//         });
+//       });
+//     }
+//   });
+//   convert simple to promise async await
+
+async function notifycustomer(){
+    const customer = await getCustomer(1)
+    console.log('Customer: ', customer);
+    if (customer.isGold) {
+        const movies = await getTopMovies();
+        console.log('Top movies: ', movies);
+    const email=await sendEmail(customer.email,movies)
+    console.log('Email sent successfully...😍')
+    }
+}
+
+
+notifycustomer();
+
+function getCustomer(id) {
+    return new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            resolve({ 
+              id: 1, 
+              name: 'Luckey Pandey', 
+              isGold: true, 
+              email: 'pandeyji7705@gmail.com' 
+            });
+          }, 4000); 
+    })
+    
+  }
+  
+  function getTopMovies() {
+    return new Promise((resolve,reject)=>{
+        setTimeout(() => {
+            resolve(['SAW', 'ATTACK']);
+          }, 4000);
+    })
+
+  }
+  
+  function sendEmail(email, movies) {
+  return new Promise ((resolve,reject)=>{
+    setTimeout(() => {
+        resolve();
+      }, 4000);
+  })
+  }
+
+
+
+                  ..............................MONGODB__MONGOOSE.............................
+                  install mongodb
+                  set path of its Environment
+
+                  --- 
+                  mongod
+                  C:\Users\laxmikantp>md c:\data\db
+                  again
+                  mongod
+
+                  now again commond 
+                  npm i mongoose
